@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Jogo da Forca App</string>
+    <string name="title_activity_escolher_palavra">escolherPalavra</string>
+</resources>

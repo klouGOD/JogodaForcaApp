@@ -1,13 +1,5 @@
 package com.esm.jogodaforcaapp;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 import android.app.Application;
 
 public class App extends Application {
@@ -19,7 +11,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        task = new Async(serverIP, porta, null);
+        task = new Async(serverIP, porta);
+        task.execute();
+    }
+
+    public void conectar(){
         task.execute();
     }
 

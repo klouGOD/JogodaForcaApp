@@ -1,6 +1,5 @@
 package com.esm.jogodaforcaapp;
 
-/*ww  w . j  av  a2  s. c  om*/
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -11,19 +10,18 @@ import android.util.Log;
 public class Async extends android.os.AsyncTask<Void, String, Exception> {
     private String url;
     private int port;
-   // private ConnectionHandler connectionHandler;
 
     private BufferedReader in;
     private PrintStream out;
     private Socket socket;
     private boolean interrupted = false;
+    private String line;
 
     private String TAG = getClass().getName();
 
-    public Async(String url, int port, ConnectionHandler connectionHandler) {
+    protected Async(String url, int port) {
         this.url = url;
         this.port = port;
-        //this.connectionHandler = connectionHandler;
     }
 
     @Override
@@ -35,7 +33,6 @@ public class Async extends android.os.AsyncTask<Void, String, Exception> {
     protected void onPostExecute(Exception result) {
         super.onPostExecute(result);
         Log.d(TAG, "Finished communication with the socket. Result = " + result);
-        //TODO If needed move the didDisconnect(error); method call here to implement it on UI thread.
     }
 
     @Override
@@ -50,11 +47,9 @@ public class Async extends android.os.AsyncTask<Void, String, Exception> {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintStream(socket.getOutputStream());
 
-            //connectionHandler.didConnect();
-
             while(!interrupted) {
-                String line = in.readLine();
-                //connectionHandler.didReceiveData(line);
+                line = in.readLine();
+                Log.d(TAG, "rola suja de mendigo:" + line);
             }
         } catch (UnknownHostException ex) {
             Log.e(TAG, "doInBackground(): " + ex.toString());
@@ -70,10 +65,11 @@ public class Async extends android.os.AsyncTask<Void, String, Exception> {
                 socket.close();
                 out.close();
                 in.close();
-            } catch (Exception ex) {}
+            } catch (Exception ex) {
+
+            }
         }
 
-        //connectionHandler.didDisconnect(error);
         return error;
     }
 
@@ -86,6 +82,10 @@ public class Async extends android.os.AsyncTask<Void, String, Exception> {
         } catch (Exception ex) {
             Log.e(TAG, "write(): " + ex.toString());
         }
+    }
+
+    public String getMessage(){
+        return line;
     }
 
     public void disconnect() {
